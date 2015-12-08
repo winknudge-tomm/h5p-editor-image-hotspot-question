@@ -659,13 +659,26 @@ H5PEditor.widgets.imageHotspotQuestion = H5PEditor.ImageHotspotQuestion = (funct
    */
   ImageHotspotQuestionEditor.prototype.populateQuestion = function () {
     var self = this;
-
     // Add image
     this.$image = $('<img>', {
       'src': H5P.getPath(this.imageField.params.path, H5PEditor.contentId)
     }).appendTo(this.$gui);
 
+
+    setTimeout(function() {
+      self.resizeQuestion();
+    }, 1);
+
+    // on window resize re-jig
+    parent.window.addEventListener('resize', function(){
+      self.resizeQuestion();
+    });
+  };
+
+  ImageHotspotQuestionEditor.prototype.resizeQuestion = function () {
+    var self = this;
     // Scale image down if it is too wide
+    
     if (this.$image.get(0).naturalWidth > this.$editor.width()) {
       this.$image.width(this.$editor.width());
     }
@@ -674,8 +687,8 @@ H5PEditor.widgets.imageHotspotQuestion = H5PEditor.ImageHotspotQuestion = (funct
     this.$image.load(function () {
       self.$gui.height(self.$image.height());
     });
+  }
 
-  };
 
   return ImageHotspotQuestionEditor;
 }(H5P.jQuery));
